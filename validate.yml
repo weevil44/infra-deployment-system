@@ -1,0 +1,42 @@
+#
+# Azure Infra Deploy Repository - Deployment Validation Pipeline
+#
+trigger:
+  branches:
+    exclude:
+    - master
+    #- feature/pipeline
+  paths:
+   include:
+    - parameters/*
+
+stages:
+  - stage: "FileValidation"
+    displayName: "File Validation"
+    jobs:
+      #
+      # Parameter Validation Job
+      #
+      - job: Validation
+        pool: 
+          name: my-infra-agents  # set this to the value of your agent pool
+        steps:
+        - task: PowerShell@2
+          # get the list of parameter files that were changed
+          displayName: Identify Infra Changes
+          name: IdentifyInfraChanges
+          enabled: true
+          inputs:
+            pwsh: "true"
+            targetType: FilePath
+            filePath: 'pipeline/scripts/Build-DeploymentLists.ps1'
+        - task: AzureCLI@2
+          # validate the parameter files
+          displayName:  Deployment Validation
+          name:  DeploymentValidation
+          enabled: true
+          inputs:
+            azureSubscription:  
+            scriptType: pscore
+            scriptPath: pipeline/scripts/Validate-InfraUpdates.ps1
+            arguments: -DeploymentList "$(standardDeploymentList)"

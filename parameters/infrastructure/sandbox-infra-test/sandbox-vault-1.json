@@ -1,0 +1,74 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "tags": {
+            "value": {
+                "Department": "Infrastructure",
+				"EnvType": "Non-Production",
+				"Sensitivity": "Non-Sensitive",
+				"SenType": "Not Applicable"
+            }
+        },
+        "location": {
+            "value": "East US 2"
+        },
+        "vaultName": {
+            "value": "sandbox-vault-1"
+        },
+        "accessPolicies": {
+            "value": [
+                {
+                    "objectId": "fd1b17e2-c984-4710-bab3-bac8b48e1b89",
+                    "secretPermissions": [
+                            "get",
+                            "set",
+                            "list",
+                            "delete"
+                    ]
+                }
+            ]
+        },
+        "enabledForDeployment": {
+            "value": false
+        },
+        "enabledForDiskEncryption": {
+            "value": false
+        },
+        "softDeleteRetentionInDays": {
+            "value": 7
+        },
+        "enableRbacAuthorization": {
+            "value": false
+        },
+        "networkAclsBypass": {
+            "value": "AzureServices"
+        },
+        "allowedIpAddresses": {
+            "value": []
+        },
+        "allowedVirtualNetworks": {
+            "value": [
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+					"roleDefinitionName": "Key Vault Contributor",
+					"principalName": "me@here.com",
+                    "principalId": "fd1b17e2-c984-4710-bab3-bac8b48e1b89"
+				}
+            ]
+        }
+    },
+    "deploymentParameters": {
+		"subscription": "my-azure-subscription",
+		"resourceGroup": "sandbox-infra-test",
+        "templateFile": ".\\standard\\keyvault-template.json",
+		"resourceType": "keyvault",
+		"templateName": "keyvault",
+		"templateVersion": "1.0.0",
+	    "metadata": "This is a file for testing a standard deployment",
+        "deployment": 1
+    }
+}
